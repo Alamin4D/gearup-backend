@@ -1,0 +1,25 @@
+import { z } from 'zod';
+
+const registerValidationSchema = z.object({
+  body: z.object({
+    name: z.string({ required_error: 'Name is required' }).min(2, 'Name must be at least 2 characters'),
+    email: z.string({ required_error: 'Email is required' }).email('Invalid email address format'),
+    password: z.string({ required_error: 'Password is required' }).min(6, 'Password must be at least 6 characters'),
+    role: z.enum(['CUSTOMER', 'PROVIDER']).default('CUSTOMER'),
+    gender: z.string().optional(),
+    companyName: z.string().optional(),
+    officeAddress: z.string().optional(),
+  }),
+});
+
+const loginValidationSchema = z.object({
+  body: z.object({
+    email: z.string({ required_error: 'Email is required' }).email('Invalid email address format'),
+    password: z.string({ required_error: 'Password is required' }),
+  }),
+});
+
+export const AuthValidation = {
+  registerValidationSchema,
+  loginValidationSchema,
+};
